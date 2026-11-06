@@ -8,11 +8,8 @@ from sqlalchemy import inspect, text
 from sqlalchemy.engine import Engine
 from sqlmodel import Session, SQLModel, create_engine, select
 
-
 class Settings(BaseSettings):
-    database_url: str = (
-        "postgresql+psycopg://postgres:postgres@localhost:5432/moviestore"
-    )
+    database_url: str
     database_echo: bool = False
 
     model_config = SettingsConfigDict(
