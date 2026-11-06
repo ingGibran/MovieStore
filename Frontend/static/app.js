@@ -81,6 +81,8 @@ function openMoviePanel(movie) {
   elements.moviePoster.hidden = !movie.poster_url;
   elements.moviePanel.hidden = false;
   elements.movieForm.reset();
+  elements.duration.disabled = false;
+  elements.movieSubmit.disabled = false;
   setMovieStatus("");
   selectMovieTab("rent");
 }
