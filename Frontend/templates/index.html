@@ -3,154 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="Explora películas en Movie Store." />
-    <title>Movie Store</title>
+    <meta name="description" content="Santos TV: disfruta tus películas favoritas." />
+    <title>Santos TV | Santos Laguna</title>
     <link rel="stylesheet" href="../static/styles.css" />
-    <script src="../static/app.js" defer></script>
+    <script defer src="https://unpkg.com/vue@3.0.0/dist/vue.global.js"></script>
+    <script defer src="../static/services/api.js?v=5"></script>
+    <script defer src="../static/components/MovieCard.js?v=5"></script>
+    <script defer src="../static/components/Catalog.js?v=5"></script>
+    <script defer src="../static/components/Header.js?v=5"></script>
+    <script defer src="../static/components/AccountModal.js?v=6"></script>
+    <script defer src="../static/components/MovieModal.js?v=5"></script>
+    <script defer src="../static/app.js?v=5"></script>
   </head>
   <body>
-    <header class="site-header">
-      <a class="brand" href="/">Movie Store</a>
-      <div class="header-actions">
-        <button class="search-link" type="button" data-focus-search>Buscar</button>
-        <button class="account-button" type="button" data-account-toggle>Cuenta</button>
-      </div>
-    </header>
-
-    <main>
-      <section class="account-panel" data-account-panel hidden aria-labelledby="account-title">
-        <div class="account-dialog" role="dialog" aria-modal="true" aria-labelledby="account-title">
-          <div class="account-dialog-header">
-            <div>
-              <p class="eyebrow">Mi cuenta</p>
-              <h2 id="account-title">Movie Store</h2>
-            </div>
-            <button class="close-button" type="button" data-account-close aria-label="Cerrar">×</button>
-          </div>
-          <nav class="account-tabs" aria-label="Opciones de cuenta">
-            <button type="button" class="active" data-account-tab="login">Iniciar sesión</button>
-            <button type="button" data-account-tab="register">Registrarme</button>
-            <button type="button" data-account-tab="profile" hidden>Mi perfil</button>
-            <button type="button" data-account-tab="content" hidden>Mi contenido</button>
-          </nav>
-          <div class="account-forms" data-auth-forms>
-            <form class="account-form" data-register-form hidden>
-              <h3>Crear cuenta</h3>
-              <input name="full_name" placeholder="Nombre completo" required />
-              <input name="email" type="email" placeholder="Correo electrónico" required />
-              <input name="password" type="password" minlength="8" placeholder="Contraseña (mínimo 8 caracteres)" required />
-              <button class="button button-primary" type="submit">Registrarme</button>
-            </form>
-            <form class="account-form" data-login-form>
-              <h3>Iniciar sesión</h3>
-              <input name="email" type="email" placeholder="Correo electrónico" required />
-              <input name="password" type="password" placeholder="Contraseña" required />
-              <button class="button button-primary" type="submit">Entrar</button>
-            </form>
-          </div>
-          <form class="account-form profile-form" data-profile-form hidden>
-            <h3>Editar perfil</h3>
-            <input name="full_name" placeholder="Nombre completo" required />
-            <input name="email" type="email" placeholder="Correo electrónico" required />
-            <input name="password" type="password" minlength="8" placeholder="Nueva contraseña (opcional)" />
-            <div class="profile-actions">
-              <button class="button button-primary" type="submit">Guardar cambios</button>
-              <button class="button" type="button" data-logout>Cerrar sesión</button>
-            </div>
-          </form>
-          <div class="content-panel" data-content-panel hidden>
-            <h3>Películas rentadas</h3>
-            <div class="content-list" data-rent-list></div>
-            <h3>Películas compradas</h3>
-            <div class="content-list" data-purchase-list></div>
-          </div>
-          <p class="account-status status-message" data-account-status role="status"></p>
-        </div>
-      </section>
-      <section class="catalog-section" id="discover" aria-labelledby="discover-title">
-        <div class="section-heading">
-          <div>
-            <p class="eyebrow">Catálogo</p>
-            <h1 id="discover-title">Encuentra una película</h1>
-          </div>
-          <span class="movie-count" data-movie-count></span>
-        </div>
-
-        <form class="filter-bar" data-filter-form>
-          <label class="search-field">
-            <input type="search" name="q" placeholder="Buscar película" autocomplete="off" />
-          </label>
-          <label class="select-field">
-            <span class="sr-only">Genre</span>
-            <select name="genre">
-              <option value="">Todos los géneros</option>
-              <option>Action</option>
-              <option>Adventure</option>
-              <option>Animation</option>
-              <option>Comedy</option>
-              <option>Crime</option>
-              <option>Drama</option>
-              <option>Fantasy</option>
-              <option>Horror</option>
-              <option>Romance</option>
-              <option>Sci-Fi</option>
-              <option>Thriller</option>
-            </select>
-          </label>
-          <label class="select-field sort-field">
-            <span class="sr-only">Sort movies</span>
-            <select name="sort">
-              <option value="rating">Mejor valoradas</option>
-              <option value="newest">Más nuevas</option>
-              <option value="title">Título A-Z</option>
-            </select>
-          </label>
-          <button class="filter-toggle" type="button" data-filter-toggle>Más filtros <span>＋</span></button>
-        </form>
-
-        <div class="extra-filters" data-extra-filters hidden>
-          <label>Minimum rating <input type="range" name="min_rating" min="0" max="10" step="0.5" value="0" data-rating-range /></label>
-          <output data-rating-output>Any rating</output>
-          <label class="year-field">Year <input type="number" name="release_year" min="1888" max="2100" placeholder="e.g. 1999" /></label>
-        </div>
-
-        <p class="status-message" data-status role="status">Cargando películas...</p>
-        <div class="movie-grid" data-movie-grid aria-live="polite"></div>
-        <button class="button button-outline load-more" type="button" data-load-more hidden>Cargar más</button>
-      </section>
-      <section class="movie-panel" data-movie-panel hidden aria-labelledby="movie-panel-title">
-        <div class="movie-dialog" role="dialog" aria-modal="true" aria-labelledby="movie-panel-title">
-          <div class="account-dialog-header">
-            <div>
-              <p class="eyebrow">Opciones de película</p>
-              <h2 id="movie-panel-title"></h2>
-            </div>
-            <button class="close-button" type="button" data-movie-close aria-label="Cerrar">×</button>
-          </div>
-          <img class="movie-dialog-poster" data-movie-poster alt="" />
-          <nav class="account-tabs" aria-label="Tipo de operación">
-            <button type="button" class="active" data-movie-tab="rent">Rentar</button>
-            <button type="button" data-movie-tab="purchase">Comprar</button>
-          </nav>
-          <form class="account-form" data-movie-form>
-            <div data-rent-options>
-              <label for="rental-duration">Duración de la renta</label>
-              <input id="rental-duration" name="duration" type="range" min="1" max="30" value="1" />
-              <span><strong data-duration-value>1 día</strong> · <strong data-rent-price>$20 MXN</strong></span>
-            </div>
-            <div class="purchase-summary" data-purchase-summary hidden>
-              Compra permanente · <strong>$200 MXN</strong>
-            </div>
-            <button class="button button-primary" type="submit" data-movie-submit>Confirmar renta</button>
-          </form>
-          <p class="account-status status-message" data-movie-status role="status"></p>
-        </div>
-      </section>
-    </main>
-
-    <footer class="site-footer">
-      <span>Movie Store</span>
-      <span>Películas para todos.</span>
-    </footer>
+    <div id="app"></div>
   </body>
 </html>
